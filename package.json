@@ -25,6 +25,7 @@
   "dependencies": {
     "cors": "2.8.5",
     "express": "^4.17.3",
+    "heroku": "^7.59.4",
     "react-scripts": "^5.0.0"
   },
   "eslintConfig": {
