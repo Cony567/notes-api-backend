@@ -22,7 +22,7 @@ app.use((request, response, next) => {
 })
 
 app.get('/', (request, response) => {
-  response.send('<h1>Me duele El BRAZO :c/ :)</h1>')
+  response.send('<h1>Api de notas</h1>')
 })
 
 app.get('/api/notes', (request, response) => {
@@ -99,20 +99,23 @@ app.listen(PORT, () => {
 let notas = [
   {
     id: 1,
-    title: 'encontrar mi Zen',
-    description: '2022-03-21T18:39:34.091Z',
+    title: 'Tengo que ver express',
+    description: 'Ver a más detalle qué es',
+    date: '2022-03-21T18:39:34.091Z',
     completed: false
   },
   {
     id: 2,
-    title: 'Tengo que estudiar para la presentación, recordar centrarme en el código',
-    description: '2022-03-21T18:39:34.091Z',
+    title: 'Tengo que estudiar para la presentación',
+    description: 'Debo recordar centrarme en el código más que en la ppt y ensayar bastante',
+    date: '2022-03-21T18:39:34.091Z',
     completed: true
   },
   {
     id: 3,
     title: 'Tocar ukelele',
-    description: '2022-03-21T18:39:34.091Z',
+    description: 'Aprenderme otra canción',
+    date: '2022-03-21T18:39:34.091Z',
     completed: false
   }
 ]
