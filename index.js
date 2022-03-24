@@ -22,7 +22,15 @@ app.use((request, response, next) => {
 })
 
 app.get('/', (request, response) => {
-  response.send('<h1>Api de notas</h1>')
+  response.send(`
+  <h1>Api de notas</h1>
+  <div>
+    <> Get all notes --> /api/notes
+    <> Get for id    --> /api/notes/:id
+    <> Delete for id --> /api/notes/:id
+    <> Post note     --> /api/notes
+  </div>
+  `)
 })
 
 app.get('/api/notes', (request, response) => {
