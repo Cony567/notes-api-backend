@@ -18,6 +18,7 @@ const app = express()
 app.use(cors())
 app.use(express.json())// midelware = 'una funcion que intercepta la peticion que está pasando por tu api'
 
+// Inicio
 app.get('/', (request, response) => {
   response.send(`
   <h1>Api de notas</h1>
@@ -81,7 +82,7 @@ app.post('/api/notes', (request, response) => {
 
   if (!nota || !nota.title) {
     return response.status(400).json({
-      error: 'nota.content se perdió'
+      error: 'nota.title no existe'
     })
   }
 
