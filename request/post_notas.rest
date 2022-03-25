@@ -2,8 +2,9 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "Almorzar",
-    "important": true
+    "title": "Almorzar",
+    "description": "Almuerzo congelado",
+    "completed": false
 }
 
 
@@ -20,5 +21,14 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "content": "Almorzar"
+    "title": "Hola mundo",
+    "completed": false
 }
+
+
+###
+DELETE http://localhost:3001/api/notes/2
+
+
+###
+GET http://localhost:3001/api/notes

@@ -17,26 +17,29 @@ const app = express()
 // metodo_use = 'que recibe un callback'
 app.use(cors())
 app.use(express.json())// midelware = 'una funcion que intercepta la peticion que está pasando por tu api'
-app.use((request, response, next) => {
-  next()
-})
 
 app.get('/', (request, response) => {
   response.send(`
   <h1>Api de notas</h1>
   <div>
-    <> Get all notes --> /api/notes
-    <> Get for id    --> /api/notes/:id
-    <> Delete for id --> /api/notes/:id
-    <> Post note     --> /api/notes
+    <ul>
+      <h3>
+      <li> Get all notes --> /api/notes </li>
+      <li> Get for id    --> /api/notes/:id </li>
+      <li> Delete for id --> /api/notes/:id </li>
+      <li> Post note     --> /api/notes </li>
+      </h3>
+    </ul>
   </div>
   `)
 })
 
+// Metodo GET de todos las notas
 app.get('/api/notes', (request, response) => {
   response.json(notas)
 })
 
+// Metodo Get de una sola nota
 // forma dinamica de recuperar un segmento del path
 app.get('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
@@ -53,6 +56,7 @@ app.get('/api/notes/:id', (request, response) => {
   }
 })
 
+// Metodo DELETE
 app.delete('/api/notes/:id', (request, response) => {
   const id = Number(request.params.id)
   const nota = notas.find(nota => nota.id === id)
@@ -70,11 +74,12 @@ app.delete('/api/notes/:id', (request, response) => {
   }
 })
 
+// Metodo POST
 app.post('/api/notes', (request, response) => {
   const nota = request.body
   const maxId = Math.max(...notas.map(nota => nota.id))
 
-  if (!nota || !nota.content) {
+  if (!nota || !nota.title) {
     return response.status(400).json({
       error: 'nota.content se perdió'
     })
@@ -82,14 +87,17 @@ app.post('/api/notes', (request, response) => {
 
   const nuevaNota = {
     id: maxId + 1,
-    content: nota.content,
-    important: typeof nota.important !== 'undefined' ? nota.important : false,
+    title: nota.title,
+    description: nota.description,
+    completed: typeof nota.completed !== 'undefined' ? nota.completed : false,
     date: new Date().toISOString()
   }
 
   notas = [...notas, nuevaNota]
   response.status(201).json(nuevaNota)
 })
+
+// Metodo que se ejecuta cuando ninguna de las rutas coincide con las anteriores
 app.use((request, response) => {
   response.status(404).json({
     error: 'No encontrado',
