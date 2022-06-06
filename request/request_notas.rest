@@ -2,9 +2,9 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "title": "Almorzar",
-    "description": "Almuerzo congelado",
-    "completed": false
+    "title": "Voy a limpiar una pieza",
+    "description": "tengo que pasar la aspiradora, trapear y hacer mi cama",
+    "completed": true
 }
 
 
@@ -13,7 +13,7 @@ POST http://localhost:3001/api/notes
 Content-Type: application/json
 
 {
-    "important": false
+    "completed": false
 }
 
 ###
@@ -27,8 +27,20 @@ Content-Type: application/json
 
 
 ###
-DELETE http://localhost:3001/api/notes/4
+DELETE http://localhost:3001/api/notes/6244dd06eb8beef01d42d64a
 
 
 ###
 GET http://localhost:3001/api/notes
+
+###
+GET http://localhost:3001/api/notes/6245c58a7d1dfc01c4643ca9
+
+###
+PUT http://localhost:3001/api/notes/6245c58a7d1dfc01c4643ca9
+Content-Type: application/json
+
+{
+    "description": "Solo hacer mi cama",
+    "completed": false
+}

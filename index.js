@@ -1,6 +1,13 @@
 // const http = require('http');
+require('dotenv').config()
+require('./mongo') // primero tiene que importar la conexion y luego el modelo
 const express = require('express')
 const cors = require('cors')
+
+const notFound = require('./middleware/notFound')
+const handleErrors = require('./middleware/handleErrors')
+const usersRouter = require('./controllers/users')
+const notesRouter = require('./controllers/notes')
 // otra forma de escribir la linea 1
 // import http from 'http';
 
@@ -20,6 +27,9 @@ app.use(express.json())// midelware = 'una funcion que intercepta la peticion qu
 
 // Inicio
 app.get('/', (request, response) => {
+  console.log(request.ip)
+  console.log(request.ips)
+  console.log(request.originalUrl)
   response.send(`
   <h1>Api de notas</h1>
   <div>
@@ -35,77 +45,15 @@ app.get('/', (request, response) => {
   `)
 })
 
-// Metodo GET de todos las notas
-app.get('/api/notes', (request, response) => {
-  response.json(notas)
-})
+app.use('/api/notes', notesRouter)
 
-// Metodo Get de una sola nota
-// forma dinamica de recuperar un segmento del path
-app.get('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const nota = notas.find(nota => nota.id === id)
-  if (nota !== undefined) {
-    response.json(nota)
-  } else {
-    response.status(404).json({
-      error: 'No encontrado',
-      nota: 'undefined',
-      ruta: request.path,
-      status: 404
-    }).end()
-  }
-})
+// conexion al controllador
+app.use('/api/users', usersRouter)
 
-// Metodo DELETE
-app.delete('/api/notes/:id', (request, response) => {
-  const id = Number(request.params.id)
-  const nota = notas.find(nota => nota.id === id)
-  if (nota !== undefined) {
-    notas = notas.filter(nota => nota.id !== id)
-    response.status(204).end()
-  } else {
-    response.status(404).json({
-      error: 'No encontrado',
-      nota: 'undefined',
-      comentario: 'nota inexistente no se ha borrado',
-      ruta: request.path,
-      status: 404
-    }).end()
-  }
-})
+// Midleware = Metodo que se ejecuta cuando ninguna de las rutas coincide con las anteriores
+app.use(notFound)
 
-// Metodo POST
-app.post('/api/notes', (request, response) => {
-  const nota = request.body
-  const maxId = Math.max(...notas.map(nota => nota.id))
-
-  if (!nota || !nota.title) {
-    return response.status(400).json({
-      error: 'nota.title no existe'
-    })
-  }
-
-  const nuevaNota = {
-    id: maxId + 1,
-    title: nota.title,
-    description: nota.description,
-    completed: typeof nota.completed !== 'undefined' ? nota.completed : false,
-    date: new Date().toISOString()
-  }
-
-  notas = [...notas, nuevaNota]
-  response.status(201).json(nuevaNota)
-})
-
-// Metodo que se ejecuta cuando ninguna de las rutas coincide con las anteriores
-app.use((request, response) => {
-  response.status(404).json({
-    error: 'No encontrado',
-    ruta: request.path,
-    status: 404
-  })
-})
+app.use(handleErrors)
 
 const PORT = process.env.PORT || 3001
 
@@ -113,26 +61,5 @@ app.listen(PORT, () => {
   console.log(`Servidor corriendo en el puerto ${PORT}`)
 })
 
-let notas = [
-  {
-    id: 1,
-    title: 'Tengo que ver express',
-    description: 'Ver a más detalle qué es',
-    date: '2022-03-21T18:39:34.091Z',
-    completed: false
-  },
-  {
-    id: 2,
-    title: 'Tengo que estudiar para la presentación',
-    description: 'Debo recordar centrarme en el código más que en la ppt y ensayar bastante',
-    date: '2022-03-21T18:39:34.091Z',
-    completed: true
-  },
-  {
-    id: 3,
-    title: 'Tocar ukelele',
-    description: 'Aprenderme otra canción',
-    date: '2022-03-21T18:39:34.091Z',
-    completed: false
-  }
-]
+// const notas = []
+module.exports = app
